@@ -14,11 +14,17 @@ module.exports = {
         if (req.query['advertiser_campaigns'].length >= 1) {
 
             var param1 = req.query['advertiser_campaigns'].split(':');         
-            var q1 = 'SELECT ads.* FROM ads INNER JOIN campaign_ads ON  ads.id = campaign_ads.ad_id'
+            /*var q1 = 'SELECT ads.* FROM ads INNER JOIN campaign_ads ON  ads.id = campaign_ads.ad_id'
             var q2 = ' INNER JOIN advertiser_campaigns ON advertiser_campaigns.id = campaign_ads.campaign_id  WHERE advertiser_campaigns.id in ('
             var queryfull = q1 + q2;
-            queryfull = queryfull + param1[0] + ');'
-            console.log(queryfull);
+            queryfull = queryfull + param1[0] + ');'*/
+
+            var query = "CALL get_ads_service(?);";
+            
+            var params = [
+            param1[0]
+             ];
+
             console.log(param1);
             
                 //Check if connection is OK
@@ -31,7 +37,7 @@ module.exports = {
                         });
                     }
                 });
-                connection.query(queryfull, function(error, results, fields) {
+                connection.query(query,params, function(error, results, fields) {
                     //Close connection
                     connection.end();
 
