@@ -14,11 +14,7 @@ module.exports = {
         if (req.query['advertiser_campaigns'].length >= 1) {
 
             var param1 = req.query['advertiser_campaigns'].split(':');         
-            /*var q1 = 'SELECT ads.* FROM ads INNER JOIN campaign_ads ON  ads.id = campaign_ads.ad_id'
-            var q2 = ' INNER JOIN advertiser_campaigns ON advertiser_campaigns.id = campaign_ads.campaign_id  WHERE advertiser_campaigns.id in ('
-            var queryfull = q1 + q2;
-            queryfull = queryfull + param1[0] + ');'*/
-
+           
             var query = "CALL get_ads_service(?);";
             
             var params = [
@@ -55,11 +51,12 @@ module.exports = {
                         res.status(400).send({
                             message: 'ERROR - No records found'
                         });
-                    }
+                    } else {
 
                     //Found records
                     console.log('OK - Successful query: "' + query + '" with results: ' + results[0]);
                     res.status(200).send(results[0]);
+                    }
                 });
         } else {
             //Internal server error, return 500
